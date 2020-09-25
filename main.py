@@ -17,17 +17,39 @@ X_test, X_val, Y_test, Y_val = train_test_split(
     test_size = 0.50
 )
 
-print(X_train.size)
-print(X_test.size)
-print(X_val.size)
+#print(X_train.size)
+#print(X_test.size)
+#print(X_val.size)
+
+#feature scaling by MinMaxScaler
+
+from sklearn.preprocessing import MinMaxScaler
+sc_x = MinMaxScaler()
+x_train = sc_x.fit_transform(X_train)
+x_test = sc_x.fit_transform(X_test)
+x_val = sc_x.fit_transform(X_val)
+
+#column(below code is for plotting of 'Weighted price') plots before and after feature scaling
+import matplotlib.pyplot as plt
+x=X_train['Weighted_Price'].head(100).tolist()
+y=[]
+for j in range(100):
+    y.append(x_train[j][5])
+plt.title('plot for Weighted_Price')
+plt.plot(x,'r')
+plt.show()
+plt.title('plot for Weighted_Price')
+plt.plot(y,'b')
+plt.show()
+
 
 #applying linear Regression
 lr = LinearRegression()
-lr.fit(X_train, Y_train)
-print(lr.score(X_test, Y_test))
+lr.fit(x_train, Y_train)
+print(lr.score(x_test, Y_test))
 
 #Bayesian Ridge regression
 from sklearn.linear_model import BayesianRidge
 gnb = BayesianRidge()
-gnb.fit(X_train, Y_train)
-print(gnb.score(X_test,Y_test))
+gnb.fit(x_train, Y_train)
+print(gnb.score(x_test,Y_test))
